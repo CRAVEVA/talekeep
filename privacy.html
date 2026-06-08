@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Talekeep — Privacy Policy</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    max-width: 720px; margin: 0 auto; padding: 40px 22px 80px; color: #1c1c1e;
+  }
+  @media (prefers-color-scheme: dark) { body { background: #1c1c1e; color: #e7e7ea; } }
+  h1 { font-size: 1.9rem; margin: 0 0 .2em; }
+  h2 { font-size: 1.25rem; margin: 2em 0 .4em; }
+  h3 { font-size: 1.05rem; margin: 1.4em 0 .3em; }
+  a { color: #0a84ff; }
+  blockquote {
+    margin: 1.2em 0; padding: .8em 1em; border-left: 3px solid #c2a14d;
+    background: rgba(194,161,77,.10); border-radius: 6px; font-size: .95rem;
+  }
+  ul { padding-left: 1.3em; }
+  li { margin: .35em 0; }
+  .updated { color: #8a8a8e; font-size: .9rem; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .92em; }
+</style>
+</head>
+<body>
+
+<h1>Talekeep — Privacy Policy</h1>
+<p class="updated">Last updated: 8 June 2026</p>
+
+<h2>The short version</h2>
+<p>Talekeep is a <strong>local-first</strong> app. Your conversations are archived
+<strong>on your own Mac</strong>, in a location <strong>you choose</strong>,
+<strong>encrypted</strong> with a key only you control. <strong>We operate no servers and
+never receive your messages.</strong> There is no Talekeep account and no telemetry.</p>
+
+<h2>What Talekeep stores, and where</h2>
+<ul>
+  <li><strong>Your archived conversations</strong> — messages you choose to sync from a
+  connected account (currently Telegram), including message text, sender identifiers,
+  timestamps, and media metadata. Message <strong>body text is encrypted at rest</strong>
+  (AES-GCM); metadata (titles, dates, kinds) is stored in plaintext so the archive is
+  searchable.</li>
+  <li><strong>Location</strong> — the default is inside the app's sandbox container; you
+  may move it to any folder you choose. The archive never leaves your device unless
+  <em>you</em> copy it.</li>
+  <li><strong>Credentials</strong> — your Telegram <code>api_id</code>/<code>api_hash</code>
+  are stored in the macOS <strong>Keychain</strong> and are sent only to Telegram, never
+  to us.</li>
+  <li><strong>Encryption keys</strong> — managed by you via a security level
+  (Keychain-protected or passphrase-protected) plus a recovery code you save yourself.</li>
+</ul>
+
+<h3>About other people's messages</h3>
+<p>A conversation archive necessarily contains messages <strong>other people</strong> sent
+to you. Talekeep treats this as <strong>your own copy of your own conversations</strong>
+(the same basis on which Telegram/WhatsApp/standard backup tools operate). You are
+responsible for handling this data lawfully in your jurisdiction. Talekeep does not build
+profiles, does not aggregate across users, and does not transmit this data anywhere.</p>
+
+<h2>What Talekeep does NOT do</h2>
+<ul>
+  <li>No Talekeep servers; no cloud sync; no account.</li>
+  <li>No analytics, ads, tracking, or telemetry.</li>
+  <li>No selling or sharing of your data.</li>
+</ul>
+
+<h2>AI features and data sharing</h2>
+<ul>
+  <li><strong>On-device AI ("Ask AI")</strong> — by default, answers are generated
+  <strong>on your Mac</strong> using Apple's on-device model. Your messages are
+  <strong>not sent anywhere</strong>.</li>
+  <li><strong>Cloud AI — optional, OFF by default, bring-your-own-key.</strong> In
+  <strong>Settings → AI</strong> you may choose to use a third-party cloud model (any
+  OpenAI-compatible provider) with <strong>your own API key</strong>. When you turn this
+  on, "Ask AI" <strong>transmits the relevant messages to the provider you configured</strong>
+  so it can answer. This is <em>your</em> own integration with <em>your</em> key: Talekeep
+  runs no AI service and never receives this data; how the provider handles it is governed
+  by <strong>their</strong> terms. The app clearly shows, while the option is on, that your
+  messages leave your Mac.</li>
+  <li><strong>MCP server — optional, OFF by default.</strong> In
+  <strong>Settings → AI access (MCP)</strong> you may start a <strong>local, read-only</strong>
+  server on <code>127.0.0.1</code> (localhost only — not reachable off this machine) that
+  lets an MCP client you connect (e.g. a desktop AI app) query your archive on this Mac. If
+  the client you connect is itself a cloud AI, what it does with the data it reads is
+  governed by <strong>that</strong> client/provider's terms; enabling the server and
+  connecting such a client is your choice.</li>
+</ul>
+
+<h2>Security</h2>
+<ul>
+  <li>Message bodies encrypted with AES-GCM (CryptoKit).</li>
+  <li>Passphrase level derives the key with PBKDF2-HMAC-SHA256 (work-factored).</li>
+  <li>You hold a recovery code; <strong>if you choose passphrase level and lose both the
+  passphrase and the recovery code, the archive is unrecoverable</strong> — by design,
+  because the key is never escrowed to anyone.</li>
+</ul>
+
+<h2>Your control and rights</h2>
+<ul>
+  <li><strong>Access/export</strong> — it's your local file; you can open, copy, or move it.</li>
+  <li><strong>Deletion</strong> — remove a conversation, remove an account (deletes its
+  data), or delete the library folder. Deletion is local and immediate.</li>
+  <li>Depending on your jurisdiction (e.g. GDPR/CCPA) you may have additional rights
+  regarding personal data; because Talekeep stores everything locally and we hold none of
+  your data, you exercise these directly on your device.</li>
+</ul>
+
+<h2>Children</h2>
+<p>Talekeep is not directed at children and stores only conversations you choose to archive
+from your own accounts.</p>
+
+<h2>Changes &amp; contact</h2>
+<p>We may update this policy; material changes will be noted in-app / in release notes.<br>
+Contact: <a href="mailto:enquiry@craveva.com">enquiry@craveva.com</a></p>
+
+</body>
+</html>
