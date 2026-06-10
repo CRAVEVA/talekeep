@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Talekeep Import Format v0 (draft)</title>
+<meta name="description" content="A simple, documented JSONL format for bringing conversations from any messenger or AI service into your Talekeep archive.">
+<style>
+  :root { color-scheme: light dark; --gold: #c2a14d; --blue: #0a84ff; }
+  body {
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    max-width: 720px; margin: 0 auto; padding: 40px 22px 80px; color: #1c1c1e;
+  }
+  @media (prefers-color-scheme: dark) { body { background: #1c1c1e; color: #e7e7ea; } }
+  h1 { font-size: 1.9rem; margin: 0 0 .2em; }
+  h2 { font-size: 1.25rem; margin: 2em 0 .4em; }
+  a { color: var(--blue); }
+  blockquote {
+    margin: 1.2em 0; padding: .8em 1em; border-left: 3px solid var(--gold);
+    background: rgba(194,161,77,.10); border-radius: 6px; font-size: .95rem;
+  }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .92em; }
+  pre {
+    background: rgba(128,128,128,.12); padding: 14px; border-radius: 10px;
+    overflow-x: auto; font-size: .85rem; line-height: 1.5;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .95rem; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid rgba(128,128,128,.25); vertical-align: top; }
+  .updated { color: #8a8a8e; font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<p><a href="index.html">← Talekeep</a></p>
+<h1>Talekeep Import Format <small>v0 (draft)</small></h1>
+<p class="updated">Published June 2026 · Status: draft — may change until in-app import ships</p>
+
+<p>Talekeep's goal is that your conversations — from <em>any</em> messenger or AI service —
+live in one encrypted archive you own. We can't build every connector at once, so we're
+doing the next best thing: <strong>documenting a simple import format now</strong>, so you
+(or your scripts, or your favorite AI) can convert any export into it today.</p>
+
+<blockquote><strong>Built into Talekeep 1.0.</strong> In the app: sidebar <strong>➕ →
+Import archive…</strong>, pick your <code>.jsonl</code>, done — the source appears in
+your sidebar, message text encrypted at rest like everything else. Imported sources are
+namespaced (<code>import-…</code>) and kept separate from live-synced sources, so when an
+official connector for your service arrives, both coexist — nothing needs migrating.
+Re-importing a file with the same <code>source.id</code> updates instead of duplicating.</blockquote>
+
+<h2>The format</h2>
+<p>A single <strong>UTF-8 JSON Lines</strong> file (<code>.talekeep.jsonl</code>): one JSON
+object per line. The first line declares the file; the rest are conversations and
+messages, in any order (a message's conversation should appear before it).</p>
+
+<pre>{"type":"talekeep-import","version":0,"source":{"id":"whatsapp-jane","name":"WhatsApp (Jane's iPhone)"}}
+{"type":"conversation","id":"family-group","title":"Family group","kind":"group"}
+{"type":"message","conversationId":"family-group","id":"1001","date":"2023-04-01T12:30:00Z","sender":"Mum","text":"Dinner at 7?"}
+{"type":"message","conversationId":"family-group","id":"1002","date":"2023-04-01T12:31:12Z","sender":"me","text":"On my way!"}
+{"type":"message","conversationId":"family-group","id":"1003","date":"2023-04-01T12:35:00Z","sender":"Mum","text":"Photo of the table","media":{"path":"media/table.jpg","kind":"photo"}}</pre>
+
+<h2>Records</h2>
+
+<h3><code>talekeep-import</code> (first line, required)</h3>
+<table>
+  <tr><th>field</th><th>type</th><th>notes</th></tr>
+  <tr><td><code>version</code></td><td>int</td><td><code>0</code></td></tr>
+  <tr><td><code>source.id</code></td><td>string</td><td>stable, unique per imported account/source — re-importing the same id updates rather than duplicates</td></tr>
+  <tr><td><code>source.name</code></td><td>string</td><td>shown in the sidebar, e.g. <code>"ChatGPT (export 2026-06)"</code></td></tr>
+</table>
+
+<h3><code>conversation</code></h3>
+<table>
+  <tr><th>field</th><th>type</th><th>notes</th></tr>
+  <tr><td><code>id</code></td><td>string</td><td>unique within the source</td></tr>
+  <tr><td><code>title</code></td><td>string</td><td></td></tr>
+  <tr><td><code>kind</code></td><td>string</td><td>optional: <code>direct</code> · <code>group</code> · <code>channel</code> · <code>ai</code> (default <code>direct</code>)</td></tr>
+</table>
+
+<h3><code>message</code></h3>
+<table>
+  <tr><th>field</th><th>type</th><th>notes</th></tr>
+  <tr><td><code>conversationId</code></td><td>string</td><td>must match a <code>conversation</code> record</td></tr>
+  <tr><td><code>id</code></td><td>string</td><td>unique within the conversation</td></tr>
+  <tr><td><code>date</code></td><td>string | int</td><td>ISO-8601 (<code>2023-04-01T12:30:00Z</code>) or unix seconds</td></tr>
+  <tr><td><code>sender</code></td><td>string</td><td>display name; use <code>"me"</code> for yourself (right-aligned bubbles)</td></tr>
+  <tr><td><code>text</code></td><td>string</td><td>message body (encrypted at rest on import)</td></tr>
+  <tr><td><code>media</code></td><td>object</td><td>optional: <code>{"path": "relative/to/jsonl.jpg", "kind": "photo|video|audio|document"}</code> — files are copied into the archive</td></tr>
+</table>
+
+<h2>Notes for converter authors</h2>
+<ul>
+  <li><strong>Make ids stable.</strong> Re-importing updates instead of duplicating
+  <em>only if</em> <code>source.id</code>, <code>conversation.id</code> and
+  <code>message.id</code> are the same across re-exports. If your source has no native
+  message ids (e.g. WhatsApp <code>.txt</code>), synthesize one deterministically — for
+  example a hash of <code>date + sender + text</code> — never a random or sequential
+  counter that changes between runs.</li>
+  <li>Unknown fields are ignored — you can keep extra metadata in your lines.</li>
+  <li>Everything is local: imports never touch the network.</li>
+  <li>Planned first-party converters: <strong>ChatGPT</strong> and <strong>Claude</strong>
+  official data exports. If you write one for another service, tell us —
+  <a href="mailto:enquiry@craveva.com">enquiry@craveva.com</a> — and we'll link it.</li>
+  <li>This page is the spec. Changes before v1 will be listed here.</li>
+</ul>
+
+<p><a href="index.html">← Back to Talekeep</a></p>
+
+</body>
+</html>
