@@ -47,6 +47,24 @@ namespaced (<code>import-…</code>) and kept separate from live-synced sources,
 official connector for your service arrives, both coexist — nothing needs migrating.
 Re-importing a file with the same <code>source.id</code> updates instead of duplicating.</blockquote>
 
+<h2>Export your chats</h2>
+<p>Every service lets you export your own data. Get the file out first — then bring it in.
+<strong>Native importers for these are landing in an upcoming release</strong> (drop the
+export straight in); until then, convert to the format below. Either way everything stays
+on your Mac.</p>
+<table>
+  <tr><th>App</th><th>How to export</th><th>File</th></tr>
+  <tr><td><strong>WhatsApp</strong></td><td>Open the chat → <em>Export Chat</em> → <em>Without Media</em></td><td><code>_chat.txt</code></td></tr>
+  <tr><td><strong>LINE</strong></td><td>Open the chat → menu → <em>Export chat history</em></td><td><code>.txt</code></td></tr>
+  <tr><td><strong>Discord</strong></td><td>No built-in export — use <a href="https://github.com/Tyrrrz/DiscordChatExporter">DiscordChatExporter</a> to save a channel or DM as JSON</td><td><code>.json</code></td></tr>
+  <tr><td><strong>ChatGPT</strong></td><td>Settings → <em>Data controls</em> → <em>Export data</em>, then unzip the emailed file</td><td><code>conversations.json</code></td></tr>
+  <tr><td><strong>Claude</strong></td><td>Settings → <em>Privacy</em> → <em>Export data</em>, then unzip (rename <code>.dms</code> → <code>.zip</code>)</td><td><code>conversations.json</code></td></tr>
+  <tr><td><strong>Gemini</strong></td><td><a href="https://takeout.google.com">Google Takeout</a> → deselect all → <em>My Activity</em> → <em>Gemini Apps</em> (not the “Gemini” option — that's Gems, not your chats)</td><td><code>.json</code></td></tr>
+  <tr><td><strong>Slack</strong></td><td>A workspace admin exports the data, then unzip it</td><td>export <em>folder</em></td></tr>
+</table>
+<p class="updated">Most services export text only — WhatsApp and LINE don't include photos or
+videos in the text export (their limitation, not ours).</p>
+
 <h2>The format</h2>
 <p>A single <strong>UTF-8 JSON Lines</strong> file (<code>.talekeep.jsonl</code>): one JSON
 object per line. The first line declares the file; the rest are conversations and
