@@ -68,6 +68,11 @@
 
   footer { margin-top: 70px; font-size: .9rem; color: #8a8a8e; text-align: center; }
   footer a { color: #8a8a8e; margin: 0 8px; }
+
+  .shots { display: grid; gap: 18px; margin: 8px 0 0; }
+  .shots img { width: 100%; height: auto; border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.08); box-shadow: 0 4px 24px rgba(0,0,0,.10); }
+  @media (prefers-color-scheme: dark) { .shots img { border-color: rgba(255,255,255,.10); } }
 </style>
 </head>
 <body>
@@ -113,6 +118,14 @@
     anywhere). Or bring your own model, or connect Claude and other AI apps via MCP.
     Your archive becomes a memory any AI can use.</p>
   </div>
+</div>
+
+<h2>See it</h2>
+<div class="shots">
+  <img src="shots/1-chat.png" alt="All your Telegram, kept forever — encrypted on your Mac" loading="lazy">
+  <img src="shots/2-media.png" alt="Every photo, video and file — browse, search and download your whole media library" loading="lazy">
+  <img src="shots/3-ask.png" alt="Ask your whole history anything — private on-device AI" loading="lazy">
+  <img src="shots/4-mcp.png" alt="Connect any AI to your archive — a built-in local MCP server" loading="lazy">
 </div>
 
 <h2>How it works</h2>
